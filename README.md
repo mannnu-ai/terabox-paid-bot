@@ -4,7 +4,7 @@ import os
 import requests
 from telebot import types
 
-API_TOKEN = '7513615944:AAEv7AB2jVFLqFUr7azQDxcWMJEuKiYddrM'
+API_TOKEN = '7911460719:AAHjIQ5EAlP49uMEGVrNSVZMJw0MW6m5EMg'
 ADMIN_ID = 6124538766
 RAZORPAY_LINK = 'https://razorpay.me/@personalbot?amount=rZC5NMufSVtgb9QV3szYxw%3D%3D'
 
