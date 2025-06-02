@@ -25,7 +25,7 @@ pip install -r requirements.txt
 
 ### 3. Add your credentials in `config.py`
 ```python
-BOT_TOKEN = "7855169943:AAFYjVaOw1mPkqo5aNzzvO19JpQ88vAql90"
+BOT_TOKEN = "7911460719:AAHjIQ5EAlP49uMEGVrNSVZMJw0MW6m5EMg"
 ADMIN_ID = 6124538766
 RAZORPAY_LINK = "https://razorpay.me/@personalbot"
 OPENAI_API_KEY = "YOUR_OPENAI_KEY"
