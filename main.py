@@ -66,6 +66,7 @@ async def handle_terabox(message: types.Message):
     reply_markup=kb
         )
         
+        
 "
                             "💳 Please purchase premium access to continue.", reply_markup=kb)
     conn.close()
