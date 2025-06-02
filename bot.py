@@ -50,7 +50,7 @@ def handle_start(message):
     bot.send_message(message.chat.id, "👋 Welcome to the TeraBox Downloader Bot!\nSend any TeraBox link to get the video. You can download 2 videos for free.")
 
 
-📥 Send me a TeraBox video link and I’ll fetch the direct download link.
+bot.send_message(message.chat.id, "📥 Send me a TeraBox video link and I’ll fetch the direct download link.")
 
 🔓 You get 2 downloads for FREE!
 💰 After that, pay ₹49/month to continue.
