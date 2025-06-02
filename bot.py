@@ -1,4 +1,3 @@
-
 import telebot
 import re
 import requests
@@ -17,7 +16,6 @@ def get_direct_link(shared_url):
         "User-Agent": "Mozilla/5.0"
     }
 
-    # Follow redirection to get the actual Terabox.com URL
     try:
         resp = session.get(shared_url, headers=headers, timeout=10, allow_redirects=True)
         if "terabox.com" not in resp.url:
@@ -25,13 +23,11 @@ def get_direct_link(shared_url):
     except Exception:
         return None
 
-    # Extract share_id
     match = re.search(r's/([a-zA-Z0-9_-]+)', resp.url)
     if not match:
         return None
     share_id = match.group(1)
 
-    # Try using the tSaving API endpoint to get file data (common unofficial method)
     api_url = f"https://www.terabox.com/share/list?app_id=250528&shorturl={share_id}&root=1"
     try:
         res = session.get(api_url, headers=headers)
@@ -47,15 +43,14 @@ def get_direct_link(shared_url):
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
-    bot.send_message(message.chat.id, "👋 Welcome to the TeraBox Downloader Bot!\nSend any TeraBox link to get the video. You can download 2 videos for free.")
-
-
-bot.send_message(message.chat.id, "📥 Send me a TeraBox video link and I’ll fetch the direct download link.")
-
-🔓 You get 2 downloads for FREE!
-💰 After that, pay ₹49/month to continue.
-
-To buy: https://razorpay.me/@personalbot?amount=rZC5NMufSVtgb9QV3szYxw%3D%3D")
+    bot.send_message(
+        message.chat.id,
+        "👋 Welcome to the TeraBox Downloader Bot!\n\n"
+        "📥 Send me a TeraBox video link and I’ll fetch the direct download link.\n\n"
+        "🔓 You get 2 downloads for FREE!\n"
+        "💰 After that, pay ₹49/month to continue.\n\n"
+        "To buy: https://razorpay.me/@personalbot?amount=rZC5NMufSVtgb9QV3szYxw%3D%3D"
+    )
 
 @bot.message_handler(func=lambda message: True)
 def handle_message(message):
@@ -66,17 +61,17 @@ def handle_message(message):
         bot.reply_to(message, "❌ Please send a valid TeraBox share link.")
         return
 
-    # Check usage
     if user_id not in user_data:
         user_data[user_id] = {'count': 0, 'paid': False}
 
     if user_data[user_id]['count'] >= FREE_LIMIT and not user_data[user_id]['paid']:
-        bot.send_message(user_id, "⚠️ You have reached the free limit of 2 downloads.
-
-💳 Pay ₹49/month to unlock unlimited access:
-https://razorpay.me/@personalbot?amount=rZC5NMufSVtgb9QV3szYxw%3D%3D
-
-After payment, contact admin to activate access.")
+        bot.send_message(
+            user_id,
+            "⚠️ You have reached the free limit of 2 downloads.\n\n"
+            "💳 Pay ₹49/month to unlock unlimited access:\n"
+            "https://razorpay.me/@personalbot?amount=rZC5NMufSVtgb9QV3szYxw%3D%3D\n\n"
+            "After payment, contact admin to activate access."
+        )
         return
 
     msg = bot.send_message(message.chat.id, "⏳ Fetching your video... Please wait.")
@@ -87,8 +82,7 @@ After payment, contact admin to activate access.")
         return
 
     try:
-        bot.send_message(user_id, f"✅ Download Link:
-{video_url}")
+        bot.send_message(user_id, f"✅ Download Link:\n{video_url}")
         user_data[user_id]['count'] += 1
     except Exception:
         bot.edit_message_text("❌ Failed to send the video link.", msg.chat.id, msg.message_id)
