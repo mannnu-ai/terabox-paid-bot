@@ -53,4 +53,16 @@ def approve_user(message):
 @bot.message_handler(commands=["broadcast"])
 def broadcast(message):
     if message.from_user.id != ADMIN_ID:
+        return
+    if " " not in message.text:
+        bot.reply_to(message, "❗ Please provide message to broadcast.")
+        return
+    text = message.text.split(" ", 1)[1]
+    for uid in users:
+        try:
+            bot.send_message(uid, text)
+        except:
+            continue
+    bot.reply_to(message, "📢 Broadcast sent.")
+    
         
