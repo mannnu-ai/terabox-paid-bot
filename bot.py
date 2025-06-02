@@ -97,7 +97,7 @@ def get_terabox_video(link):
             import re
             match = re.search(r'"videoUrl":"(.*?)"', response.text)
             if match:
-                return match.group(1).replace('\u002F', '/').replace('\', '')
+                return match.group(1).replace('\u002F', '/').replace('\\', '')
     except:
         return None
     return None
