@@ -1,3 +1,1 @@
-git add requirements.txt
-git commit -m "Added bs4 to requirements"
-git push
+beautifulsoup4
