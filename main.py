@@ -60,7 +60,12 @@ async def handle_terabox(message: types.Message):
             await message.reply("❌ Failed to download video. Invalid link or error occurred.")
     else:
         kb = InlineKeyboardMarkup().add(InlineKeyboardButton("💳 Buy Premium", url=RAZORPAY_LINK))
-        await message.reply("🚫 You’ve used your 2 free downloads.
+        await message.reply(
+    "🚫 You’ve used your 2 free downloads.\n"
+    "💳 Please buy premium to continue using the bot.",
+    reply_markup=kb
+        )
+        
 "
                             "💳 Please purchase premium access to continue.", reply_markup=kb)
     conn.close()
