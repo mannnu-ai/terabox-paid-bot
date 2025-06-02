@@ -31,10 +31,11 @@ def increment_free(user_id):
 
 @bot.message_handler(commands=["start"])
 def send_welcome(message):
-    bot.reply_to(message, "👋 Hi! I'm Sakshi, your virtual friend. Let's talk!
-
-💸 Unlock unlimited chat for ₹49:
-" + RAZORPAY_LINK)
+    bot.reply_to(
+        message,
+        "👋 Hi! I'm Sakshi, your virtual friend. Let's talk!\n\n"
+        "💸 Unlock unlimited chat for ₹49:\n" + RAZORPAY_LINK
+    )
 
 @bot.message_handler(commands=["approve"])
 def approve_user(message):
@@ -52,32 +53,4 @@ def approve_user(message):
 @bot.message_handler(commands=["broadcast"])
 def broadcast(message):
     if message.from_user.id != ADMIN_ID:
-        return
-    text = message.text.split(" ", 1)[1]
-    for uid in users:
-        try:
-            bot.send_message(uid, text)
-        except:
-            continue
-    bot.reply_to(message, "📢 Broadcast sent.")
-
-@bot.message_handler(func=lambda m: True)
-def handle_chat(message):
-    uid = message.from_user.id
-    if not is_premium(uid):
-        if users.get(str(uid), {}).get("free_count", 0) >= 2:
-            bot.reply_to(message, "🚫 Free limit reached. Get premium: " + RAZORPAY_LINK)
-            return
-        increment_free(uid)
-
-    prompt = message.text
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=[{"role": "user", "content": prompt}]
-        )
-        reply = response['choices'][0]['message']['content']
-        bot.reply_to(message, reply)
-    except Exception as e:
-        bot.reply_to(message, "❌ Error: " + str(e))
-
-bot.infinity_polling()
+        
