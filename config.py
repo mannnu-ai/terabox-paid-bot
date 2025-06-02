@@ -1,0 +1,4 @@
+BOT_TOKEN = "7855169943:AAFYjVaOw1mPkqo5aNzzvO19JpQ88vAql90"
+ADMIN_ID = 6124538766
+RAZORPAY_LINK = "https://razorpay.me/@personalbot"
+OPENAI_API_KEY = "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"
