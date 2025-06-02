@@ -24,16 +24,15 @@ def init_db():
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
     kb = InlineKeyboardMarkup().add(InlineKeyboardButton("💳 Buy Premium (₹49)", url=RAZORPAY_LINK))
-    await message.answer("👋 Welcome to TeraBox Video Downloader Bot!
-
-"
-                         "📥 Send me any TeraBox link and I’ll fetch the video.
-"
-                         "🆓 First 2 downloads are free!
-"
-                         "💳 After that, pay ₹49/month to continue.
-"
-                         "👇 Click below to buy premium access:", reply_markup=kb)
+    await message.answer(
+    "👋 Welcome to TeraBox Video Downloader Bot!\n\n"
+    "📥 Send any TeraBox link to download videos.\n"
+    "🆓 First 2 videos are FREE.\n"
+    "💳 Then, pay ₹49/month for unlimited access.\n"
+    "👇 Tap below to buy premium:",
+    reply_markup=kb
+    )
+    
 
 @dp.message_handler(lambda msg: "terabox.com" in msg.text)
 async def handle_terabox(message: types.Message):
