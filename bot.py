@@ -2,9 +2,11 @@ from telethon import TelegramClient, events
 from redis import Redis
 import config
 
+# Bot & Redis setup
 bot = TelegramClient('bot', config.API_ID, config.API_HASH).start(bot_token=config.BOT_TOKEN)
-r = Redis(host='localhost', port=6379, db=0)  # Adjust Redis settings if needed
+r = Redis(host='localhost', port=6379, db=0)  # Change host/port if Redis is not local
 
+# --- TeraBox link handler ---
 @bot.on(events.NewMessage(pattern='https?://.*terabox.*'))
 async def handle_link(event):
     user_id = str(event.sender_id)
@@ -13,8 +15,7 @@ async def handle_link(event):
     if r.get(f"user:{user_id}:premium"):
         pass
     elif used >= 2:
-        await event.reply("❌ Aapke 2 free downloads ho chuke hain.
-        ₹49/month ka plan kharidne ke liye /buy use karein.")
+        await event.reply("❌ Aapke 2 free downloads ho chuke hain.\n₹49/month ka plan kharidne ke liye /buy use karein.")
         return
 
     try:
@@ -25,23 +26,25 @@ async def handle_link(event):
 
     r.incr(f"user:{user_id}:used")
 
+# --- /start command ---
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
     user_id = str(event.sender_id)
     used = int(r.get(f"user:{user_id}:used") or 0)
     premium = r.get(f"user:{user_id}:premium")
     status = "✅ Premium User" if premium else f"🆓 Free User ({used}/2 used)"
-    await event.reply(f"👋 Welcome to TeraBox Downloader!
+    await event.reply(f"""👋 Welcome to TeraBox Downloader!
 
 🔹 Status: {status}
 🔗 Send a TeraBox link to download.
-💳 Use /buy to get Premium access.")
+💳 Use /buy to get Premium access.""")
 
+# --- /buy command ---
 @bot.on(events.NewMessage(pattern='/buy'))
 async def buy(event):
-    await event.reply(f"💳 Buy Premium (₹49/month):
-👉 [Click to Pay]({config.RAZORPAY_LINK})", link_preview=False)
+    await event.reply(f"💳 Buy Premium (₹49/month):\n👉 [Click to Pay]({config.RAZORPAY_LINK})", link_preview=False)
 
+# --- /approve command (admin only) ---
 @bot.on(events.NewMessage(pattern='/approve'))
 async def approve(event):
     if event.sender_id != config.ADMIN_ID:
@@ -50,7 +53,8 @@ async def approve(event):
         user_id = event.text.split()[1]
         r.set(f"user:{user_id}:premium", 1)
         await event.reply(f"✅ Approved user {user_id} as Premium.")
-    except:
+    except IndexError:
         await event.reply("❌ Usage: /approve <user_id>")
 
+# Run the bot
 bot.run_until_disconnected()
