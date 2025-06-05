@@ -13,8 +13,8 @@ async def handle_link(event):
     if r.get(f"user:{user_id}:premium"):
         pass
     elif used >= 2:
-        await event.reply("❌ Aapke 2 free downloads ho chuke hain.")
-💳 ₹49/month ka plan kharidne ke liye /buy use karein.")
+        await event.reply("❌ Aapke 2 free downloads ho chuke hain.
+        ₹49/month ka plan kharidne ke liye /buy use karein.")
         return
 
     try:
